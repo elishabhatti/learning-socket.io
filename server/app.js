@@ -1,7 +1,6 @@
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
-import cors from "cors";
 
 const port = 3000;
 const app = express();
@@ -24,9 +23,11 @@ io.on("connection", (socket) => {
   socket.on("message", (data) => {
     console.log(data);
   });
+
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });
+  
 });
 
 server.listen(port, () => {
