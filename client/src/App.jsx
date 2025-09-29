@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Button, Container, TextField, Typography } from "@mui/material";
 
@@ -9,6 +9,7 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     socket.emit("message", message);
+    setMessage("");
   };
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const App = () => {
           label="Outlined"
           variant="outlined"
         />
-        <Button variant="contained" color="primary">
+        <Button type="submit" variant="contained" color="primary">
           Send
         </Button>
       </form>
