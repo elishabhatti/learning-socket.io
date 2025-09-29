@@ -20,9 +20,13 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("user connected");
-  console.log("id", socket.id);
-  socket.emit("welcome", `Welcome to the server ${socket.id}`);
+  console.log("user connected", socket.id);
+  socket.on("message", (data) => {
+    console.log(data);
+  });
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
 });
 
 server.listen(port, () => {
