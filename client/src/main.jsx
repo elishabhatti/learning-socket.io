@@ -5,9 +5,9 @@ import App from "./App.jsx";
 import { CssBaseline } from "@mui/material";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
     <CssBaseline>
       <App />
     </CssBaseline>
-  </StrictMode>
+  // </StrictMode>
 );
