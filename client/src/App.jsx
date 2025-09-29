@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { io } from "socket.io-client";
 import { Button, Container, TextField, Typography } from "@mui/material";
 
 const App = () => {
-  const socket = io("http://localhost:3000");
+  const socket = useMemo(() => io("http://localhost:3000"), []);
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
@@ -18,6 +18,9 @@ const App = () => {
     });
     socket.on("welcome", (s) => {
       console.log(s);
+    });
+    socket.on("receive-message", (s) => {
+      console.log("received message:", s);
     });
 
     return () => {
