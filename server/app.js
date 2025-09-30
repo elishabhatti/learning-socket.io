@@ -20,9 +20,9 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
-  socket.on("message", (data) => {
-    console.log(data);
-    socket.broadcast.emit("receive-message", data);
+  socket.on("message", ({message, room}) => {
+    console.log({message, room});
+    socket.to(room).emit("receive-message", message);
   });
 
   socket.on("disconnect", () => {
