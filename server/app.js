@@ -22,11 +22,9 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
   const token = jwt.sign({ _id: "elishajameelid", secretKey });
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  });
+  res
+    .cookie("token", token, { httpOnly: true, secure: true, sameSite: "none" })
+    .json({ message: "login Success" });
 });
 
 const user = false;
