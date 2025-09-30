@@ -20,11 +20,14 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
-  socket.on("message", ({message, room}) => {
-    console.log({message, room});
+  socket.on("message", ({ message, room }) => {
+    console.log({ message, room });
     socket.to(room).emit("receive-message", message);
   });
 
+  socket.on("join-room", (room) => {
+    socket.join(room);
+  });
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });
