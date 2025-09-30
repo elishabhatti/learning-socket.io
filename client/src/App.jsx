@@ -25,6 +25,11 @@ const App = () => {
     setMessage("");
     setRoom("");
   };
+  const joinRoomHandler = (e) => {
+    e.preventDefault();
+    socket.emit("join-room", roomName);
+    setRoomName("");
+  };
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -50,7 +55,7 @@ const App = () => {
         <Typography variant="h6" component="div" gutterBottom>
           {socketId}
         </Typography>
-        <form>
+        <form onSubmit={joinRoomHandler}>
           <h5>Join Room</h5>
           <TextField
             value={roomName}
