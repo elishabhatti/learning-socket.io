@@ -1,10 +1,12 @@
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import jwt from "jsonwebtoken";
 
 const port = 3000;
 const app = express();
 const server = createServer(app);
+const secretKey = "secetkey1234";
 
 const io = new Server(server, {
   cors: {
@@ -17,7 +19,18 @@ const io = new Server(server, {
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
+app.get("/login", (req, res) => {
+  const token = jwt.sign({ _id: "elishajameelid", secretKey });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+});
+
 const user = false;
+
 io.use((socket, next) => {
   if (user) next();
 });
