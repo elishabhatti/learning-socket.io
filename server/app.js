@@ -2,6 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 const port = 3000;
 const app = express();
@@ -21,15 +22,22 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  const token = jwt.sign({ _id: "elishajameelid", secretKey });
+  const token = jwt.sign({ _id: "elishajameelid" }, secretKey);
   res
-    .cookie("token", token, { httpOnly: true, secure: true, sameSite: "none" })
+    .cookie("token", token, { httpOnly: false, secure: true, sameSite: "none" })
     .json({ message: "login Success" });
 });
 
 const user = false;
 
 io.use((socket, next) => {
+  cookieParser()(socket.request, socket.request.res, (err) => {
+    if (err) return next(err);
+    const token = socket.request.cookies.token;
+    if (!token) return next(new Error("Authentication Error"));
+    const decoded = jwt.verify(token, secretKey);
+    if (!decoded) return next(new Error("Authentication Error"));
+  });
   if (user) next();
 });
 
