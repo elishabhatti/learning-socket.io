@@ -17,6 +17,10 @@ const io = new Server(server, {
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+const user = false;
+io.use((socket, next) => {
+  if (user) next();
+});
 
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
