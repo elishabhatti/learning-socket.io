@@ -28,21 +28,18 @@ app.get("/login", (req, res) => {
     .json({ message: "login Success" });
 });
 
-const user = false;
-
 io.use((socket, next) => {
   cookieParser()(socket.request, socket.request.res, (err) => {
     if (err) return next(err);
     const token = socket.request.cookies.token;
     if (!token) return next(new Error("Authentication Error"));
     const decoded = jwt.verify(token, secretKey);
-    if (!decoded) return next(new Error("Authentication Error"));
+    next();
   });
-  if (user) next();
 });
 
 io.on("connection", (socket) => {
-  console.log("user connected", socket.id);
+  console.log("user ccookieParseronnected", socket.id);
   socket.on("message", ({ message, room }) => {
     console.log({ message, room });
     socket.to(room).emit("receive-message", message);
